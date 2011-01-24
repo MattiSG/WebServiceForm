@@ -19,6 +19,7 @@ You will get:
 
 * asynchronous submit (no page reload);
 * submission blocking while first submit is done;
+* destination URI (“action”) expansion with values from the form;
 * CSS updates about the submission process.
 
 As a bonus:
