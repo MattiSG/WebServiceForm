@@ -1,6 +1,8 @@
 /**
 *@author	Matti Schneider-Ghibaudo
 *
+*@version	0.1
+*
 *@dependencies
 *	MooTools 1.3
 */
@@ -47,7 +49,10 @@ var WebServiceForm = new Class({
 				if (this.options.resetOnSuccess !== false)
 					this.reset.delay(this.options.resetOnSuccess, this);
 			}.bind(this),
-			failure: this.show.pass('failure', this)
+			failure: function() {
+				this.show('failure');
+				this.enable();
+			}.bind(this)
 		});
 		
 		this.form.addEvent('submit', function(e) {
