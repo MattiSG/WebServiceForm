@@ -74,6 +74,8 @@ var WebServiceForm = new Class({
 	
 	reset: function reset() {
 		this.enable();
+		this.form.reset();
+		this.form.getElements('input')[0].focus();
 		return this.show('reset');
 	},
 	
