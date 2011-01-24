@@ -1,0 +1,29 @@
+form input[type=submit] {
+	width: 100%;
+	font-size: 120%;
+	font-weight: bold;
+	background-color: #265fd6;
+	border-bottom-radius: 0.5em;
+	border: 1px solid black;
+	padding: 0.2em;
+	margin: 0;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#66aafa), to(#2773dc));;
+	-webkit-box-shadow, -moz-box-shadow: 0px 2px 8px rgba(27, 68, 153, 0.4);
+	-webkit-transition, -moz-transition: background-color 0.3s, background-image 0.3s;
+	cursor: pointer;
+}
+
+form.success input[type=submit] {
+	background-color: #00ba08;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#00e10a), to(#009b07));
+}
+	
+form.failure input[type=submit] {
+	background-color: #c20303;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#d80404), to(#980101));
+}
+		
+form.submitting input[type=submit] {
+	background-color: #c4c4c4;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#939393), to(#636363));
+}
