@@ -1,12 +1,30 @@
 MSGForm
 ==========
 
-An automatic asynchronous (“AJAX”) form creator. Transforms a plain form to an asynchronous one.
+An automatic asynchronous (“AJAX”) form creator. Transforms a plain form to an asynchronous one, with multiple small benefits.
 
 Developer rationale
---------
+-------------------
 
 This class removes all the burden of catching submit events and replacing them with Requests. It also provides with all the class-updating stuff you need to go directly to styling.
+
+Features
+--------
+
+You will get:
+
+* asynchronous submit (no page reload);
+* submission blocking while first submit is done;
+* CSS updates about the submission process.
+
+As a bonus:
+
+* default CSS for your form that stresses the submission process.
+
+You will not get:
+
+* form validation;
+* server reply handling (an event will pass it to you, of course).
 
 How to use
 ----------
