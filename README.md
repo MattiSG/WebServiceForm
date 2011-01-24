@@ -36,13 +36,13 @@ How to use
 
 Straightforward usage:
 
-	MSGForm.enhance('form'); //of course, the arg will be passed to $$, so pass it whatever $$ accepts
+	WebServiceForm.apply('form'); //of course, the arg will be passed to $$, so pass it whatever $$ accepts
     
 You can put this piece of code anywhere, it will take care of domready events itself.
 
 More precise usage:
 
-	new MSGForm(myForm, [options]); //where myForm is an Element or ID
+	new WebServiceForm(myForm, [options]); //where myForm is an Element or ID
 
 Options
 -------
