@@ -21,7 +21,7 @@ You will get:
 
 * asynchronous submit (no page reload);
 * submission blocking while first submit is done;
-* destination URI (“action”) expansion with values from the form (TO BE DONE);
+* destination URI (“action”) expansion with values from the form;
 * CSS & submit values updates about the submission process.
 
 As a bonus:
@@ -36,15 +36,34 @@ You will not get:
 How to use
 ----------
 
-Dumb usage:
+**Dumb usage**
 
 	WebServiceForm.applyTo('form'); //of course, the arg will be passed to $$, so pass it whatever $$ accepts
     
 You can put this piece of code anywhere, it will take care of domready events itself.
 
-More precise usage:
+**More precise usage**
 
 	new WebServiceForm(myForm, [options]); //where myForm is an Element or ID
+	
+**Action expansion**
+
+To use action expansion (replacing parts of the destination URL with values from the form), just write your action with the names of the inputs between brackets to get their values.
+
+Example:
+
+	<form id="messageForm" method="post" action="myAction/{userName}">
+		<input type="text" name="userName" value="MyName" required/>
+		<input type="text" name="message" value="My message" required/>
+		<input type="submit" value="Send message"/>
+	</form>
+	
+	/* Pressing submit will send a request to "myAction/MyName" with the parameters
+	* {
+	*	userName: "MyName",
+	*	message: "My message"
+	* }
+	*/
 
 Options
 -------

@@ -4,7 +4,7 @@
 *@author	Matti Schneider-Ghibaudo
 */
 /*
-*@version	0.1
+*@version	0.2
 *
 *@dependencies
 *	MooTools 1.3
@@ -12,6 +12,7 @@
 *@license
 * (CC-BY)[http://creativecommons.org/licenses/by/3.0/], i.e. "Do whatever you want as long as I am credited somewhere". Credit must be both given in the code and accessible to the end user.
 */
+
 
 var WebServiceForm = new Class({
 	Implements: [Events, Options],
@@ -27,11 +28,17 @@ var WebServiceForm = new Class({
 			failure:	'failure'
 		},
 		values: {
-			reset:		'Envoyer',
-			request:	'Envoi…',
-			success:	'Merci !',
-			failure:	'Réessayer'
-		}
+			reset:		'Send',
+			request:	'Sending…',
+			success:	'Thank you!',
+			failure:	'Try again'
+		},
+		/**Second arg to the substitute(inputNamesToValues) call upon the "action" attribute of the form.
+		*Defaults to the default value of substitute (at time of writing, means that you should write the names of the inputs you want to be expanded to their values between {brackets}).
+		*
+		*@see	String.substitute
+		*/
+		actionRegExp:	0 //0 so that it is ignored (shorter than "undefined")
 	},
 	
 /*
@@ -67,6 +74,7 @@ var WebServiceForm = new Class({
 				return false;
 				
 			this.disable();
+			this.makeRequest();
 			this.request.send({
 				data: this.form
 			});
@@ -75,7 +83,9 @@ var WebServiceForm = new Class({
 	},
 	
 	makeRequest: function makeRequest() {
-		
+		this.request.setOptions({
+			url: this.form.get('action').substitute(this.form.asObject(), this.options.actionRegExp)
+		});
 	},
 	
 	reset: function reset() {
@@ -117,3 +127,33 @@ WebServiceForm.apply = function WebServiceFormStartup(elements, options) {
 		});
 	});
 }
+
+/*
+*Adapted from Dimitar Christoff at http://stackoverflow.com/questions/2166042/how-to-convert-form-data-to-object-using-mootools
+*/
+Element.implement({
+	asObject: function asObject() {
+		var result = {};
+		var toIgnore = ['submit', 'reset', 'file'];
+		this.getElements('input, select, textarea', true).each(function(input) {
+			var type = input.get('type');
+			var name = input.get('name');
+			if (! name || toIgnore.contains(type) || input.get('disabled'))
+				return;
+				
+			var value;
+			if (input.get('tag') == 'select') {
+				value = input.getSelected().map(function(selected) {
+					return selected.get('value');
+				})
+			} else if (type == 'radio' || type == 'checkbox') {
+				value = !! input.get('checked');
+			} else {
+				value = input.get('value');
+			}
+
+			result[name] = value;
+		});
+		return result;
+	}
+});
