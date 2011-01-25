@@ -21,7 +21,7 @@ You will get:
 
 * asynchronous submit (no page reload);
 * submission blocking while first submit is done;
-* destination URI (“action”) expansion with values from the form;
+* destination URI (“action”) expansion with values from the form (TO BE DONE);
 * CSS & submit values updates about the submission process.
 
 As a bonus:
@@ -36,7 +36,7 @@ You will not get:
 How to use
 ----------
 
-Straightforward usage:
+Dumb usage:
 
 	WebServiceForm.applyTo('form'); //of course, the arg will be passed to $$, so pass it whatever $$ accepts
     
@@ -49,13 +49,18 @@ More precise usage:
 Options
 -------
 
-* classes
+* `resetOnSuccess`: time (in milliseconds) before the form should be reset after a successful update, or false if the form should not be reset. Defaults to 0 (immediate reset).
+* `classes`: a hash containing the CSS classes to be applied to the form element. May contain:
+	- `reset`:	when the form is to be submitted. Defaults to none.
+	- `request`:	when the submission has been asked and a reply is being waited for. Defaults to "submitting".
+	- `success`:	when a successful reply has been received from the server. Defaults to "success".
+	- `failure`:	when an failure reply has been received from the server. Defaults to "failure".
+* `values`: a hash containing the values which the submit input should be updated with. Contains the same keys as the `classes` hash.
 
 Events
 ------
 
-- onComplete
-- onFailure
+TO BE DONE
 
 License
 -------
