@@ -79,7 +79,11 @@ Options
 Events
 ------
 
-TO BE DONE
+The following events may be fired by an instance of this class:
+
+* `success`: see [`Request.onSuccess`](http://mootools.net/docs/core/Request/Request), same args and everything;
+* `failure`: see [`Request.onSuccess`](http://mootools.net/docs/core/Request/Request), same args and everything;
+* `submit`: right before the request is sent. Called with one parameter, the [`Request`](http://mootools.net/docs/core/Request/Request) instance that will be sent, so that you can control it and listen to fancier events (`loadstart`, `progress`…).
 
 License
 -------

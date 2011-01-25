@@ -57,14 +57,16 @@ var WebServiceForm = new Class({
 			method: this.form.get('method') || 'post',
 			noCache: true
 		}).addEvents({
-			success: function(replyText) {
+			success: function(text, xml) {
 				this.show('success');
 				if (this.options.resetOnSuccess !== false)
 					this.reset.delay(this.options.resetOnSuccess, this);
+				this.fireEvent('success', [text, xml]);
 			}.bind(this),
-			failure: function() {
+			failure: function(xhr) {
 				this.show('failure');
 				this.enable();
+				this.fireEvent('failure', xhr);
 			}.bind(this)
 		});
 		
@@ -75,6 +77,8 @@ var WebServiceForm = new Class({
 				
 			this.disable();
 			this.makeRequest();
+			
+			this.fireEvent('submit', this.request);
 			this.request.send({
 				data: this.form
 			});
