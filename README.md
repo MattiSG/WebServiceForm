@@ -1,11 +1,11 @@
 WebServiceForm
 ==============
 
-Basically, a (MooTools)[http://mootools.net] automatic asynchronous (“AJAX”) form creator. Transforms a plain form to an asynchronous one.
+Basically, a [MooTools](http://mootools.net) automatic asynchronous (“AJAX”) form creator. Transforms a plain form to an asynchronous one.
 
 Differs from Form.Request in several important ways, which can be summed up in the fact that this WebServiceForm aims to help you develop frontends to APIs rather than simply getting updates from a server.
 
-For example, while Form.Request aims to make updating an element with the reply to the submission straightforward, this class will let you handle it, and work only with status codes. It will also let you dynamically create the action URL from values in the form, letting you use clean (REST APIs)[http://en.wikipedia.org/wiki/Representational_State_Transfer#RESTful_web_services].
+For example, while Form.Request aims to make updating an element with the reply to the submission straightforward, this class will let you handle it, and work only with status codes. It will also let you dynamically create the action URL from values in the form, letting you use clean [REST APIs](http://en.wikipedia.org/wiki/Representational_State_Transfer#RESTful_web_services).
 
 Developer usage rationale
 -------------------------
@@ -60,4 +60,4 @@ Events
 License
 -------
 
-(CC-BY)[http://creativecommons.org/licenses/by/3.0/], i.e. "Do whatever you want as long as I am credited somewhere". Credit must be both given in the code and accessible to the end user. The end-user part may be in an "about" link or whatever, no need to make the reference prominent, but it has to be somehow accessible if someone's wondering.
+[CC-BY](http://creativecommons.org/licenses/by/3.0/), i.e. "Do whatever you want as long as I am credited somewhere". Credit must be both given in the code and accessible to the end user. The end-user part may be in an "about" link or whatever, no need to make the reference prominent, but it has to be somehow accessible if someone's wondering.
