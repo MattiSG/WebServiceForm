@@ -1,10 +1,16 @@
-/**
-*@author	Matti Schneider-Ghibaudo
+/**!
+*WebServiceForm MooTools Class
 *
+*@author	Matti Schneider-Ghibaudo
+*/
+/*
 *@version	0.1
 *
 *@dependencies
 *	MooTools 1.3
+*
+*@license
+* (CC-BY)[http://creativecommons.org/licenses/by/3.0/], i.e. "Do whatever you want as long as I am credited somewhere". Credit must be both given in the code and accessible to the end user.
 */
 
 var WebServiceForm = new Class({
