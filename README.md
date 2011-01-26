@@ -74,7 +74,16 @@ Options
 	- `request`:	when the submission has been asked and a reply is being waited for. Defaults to "submitting".
 	- `success`:	when a successful reply has been received from the server. Defaults to "success".
 	- `failure`:	when an failure reply has been received from the server. Defaults to "failure".
-* `values`: a hash containing the values which the submit input should be updated with. Contains the same keys as the `classes` hash.
+	
+	Set any of these to `false` to prevent the class from updating.
+	
+* `values`: a hash containing the values which the submit input should be updated with. Contains the same keys as the `classes` hash, with the following default values:
+	- `reset`:	defaults to the original value of the submit input.
+	- `request`:	defaults to "Sending…".
+	- `success`:	defaults to "Thank you!".
+	- `failure`:	defaults ot "Try again".
+	
+	Set any of these to `false` to prevent the value from updating.
 
 Events
 ------

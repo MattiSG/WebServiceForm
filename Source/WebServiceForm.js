@@ -4,7 +4,7 @@
 *@author	Matti Schneider-Ghibaudo
 */
 /*
-*@version	0.2
+*@version	0.2.1
 *
 *@dependencies
 *	MooTools 1.3
@@ -28,7 +28,7 @@ var WebServiceForm = new Class({
 			failure:	'failure'
 		},
 		values: {
-			reset:		'Send',
+			reset:		false,
 			request:	'Sending…',
 			success:	'Thank you!',
 			failure:	'Try again'
@@ -51,6 +51,9 @@ var WebServiceForm = new Class({
 		this.setOptions(opts);
 		this.form = $(form);
 		this.submit = this.form.getChildren('input[type=submit]:last-child')[0]; //consider that the submit element to block is the last one in the form
+		
+		if (! this.options.values.reset)
+			this.options.values.reset = this.submit.get('value');
 		
 		this.request = new Request({
 			url: this.form.get('action'),
@@ -104,8 +107,12 @@ var WebServiceForm = new Class({
 	*@param (optional)	params	the optional params to pass to 
 	*/
 	show: function show(status, params) {
-		this.form.set('class', this.options.classes[status]);
-		this.submit.set('value', this.options.values[status]);
+		if (this.options.classes[status] !== false)
+			this.form.set('class', this.options.classes[status]);
+		
+		if (this.options.values[status] !== false)
+			this.submit.set('value', this.options.values[status]);
+			
 		return this;
 	},
 	
