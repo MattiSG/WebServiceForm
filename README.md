@@ -70,6 +70,8 @@ Options
 -------
 
 * `resetOnSuccess`: time (in milliseconds) before the form should be reset after a successful update, or false if the form should not be reset. Defaults to 0 (immediate reset).
+* `disableOnSubmit`: whether the inputs should be disabled while submissions of the form are forbidden.
+	Can be either `false` (the default), `true` or "readonly", in which case the inputs won't be disabled but set to readonly (not compatible with all browsers).
 * `classes`: a hash containing the CSS classes to be applied to the form element. May contain:
 	- `reset`:	when the form is to be submitted. Defaults to none.
 	- `submit`:	when the submission has been asked and a reply is being waited for. Defaults to "submitting".
@@ -85,22 +87,41 @@ Options
 	- `failure`:	defaults to "Try again".
 	
 	Set any of these to `false` to prevent the value from updating.
+	
+	These values also support value expansion, in the same way that the action expansion works. Example:
+	
+		<form id="accountForm" method="post" action="update/{acctNum}">
+			<!-- … -->
+			<input type="text" name="acctNum"/>
+			<input type="submit" value="Update"/>
+		</form>
+		<script>
+		new WebServiceForm('accountForm', {
+			values: {
+				submit: 'Trying to update account #{acctNum}',
+				success: 'Successfully updated account #{acctNum}!'
+			}
+		});
+		</script>
 
 Events
 ------
 
 The following events may be fired by an instance of this class:
 
-* `success`: see [`Request.onSuccess`](http://mootools.net/docs/core/Request/Request), just forwarding the `Request` event;
-* `failure`: see [`Request.onFailure`](http://mootools.net/docs/core/Request/Request), just forwarding the `Request` event;
-* `submit`: right before the request is sent. Called with one parameter, the [`Request`](http://mootools.net/docs/core/Request/Request) instance that will be sent, so that you can control it and listen to fancier events (`loadstart`, `progress`…).
-* `reset`: when the form is reset. No parameter passed.
+* `success`: see [`Request.onSuccess`](http://mootools.net/docs/core/Request/Request), just forwarding the `Request` event, plus one last argument being the `WebServiceForm` instance that fired it.
+	This event will be fired _before_ the form is reset, even if the delay for it is set to 0, so you can have a chance to get the values that were sent from the form.
+* `failure`: see [`Request.onFailure`](http://mootools.net/docs/core/Request/Request), just forwarding the `Request` event, plus one last argument being the `WebServiceForm` instance that fired it.
+* `submit`: right before the request is sent. Called with one parameter, the [`Request`](http://mootools.net/docs/core/Request/Request) instance that will be sent, so that you can control it and listen to fancier events (`loadstart`, `progress`…), plus one last argument being the `WebServiceForm` instance that fired it.
+* `reset`: when the form is reset. One parameter: the `WebServiceForm` instance that fired the event.
 
 Methods
 -------
 
 **Getters**
 
+* `getForm()`: Returns the form to which this `WebServiceForm` is currenty attached.
+* `getSubmit()`: Returns the submit input that this `WebServiceForm` updates.
 * `isDisabled()`: Tells whether the form is currently disabled for submission (i.e. request has been sent and we're waiting for a reply) or not.
 
 **Functions**

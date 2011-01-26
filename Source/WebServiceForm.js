@@ -21,6 +21,10 @@ var WebServiceForm = new Class({
 		/**Time (in milliseconds) before the form should go back to normal after a successful update, or false if the form should not be reset.
 		*/
 		resetOnSuccess:	0,
+		/**Whether the inputs should be disabled while submissions of the form are forbidden.
+		*Can be either false (default), true or "readonly", in which case the inputs won't be disabled but set to readonly (not compatible with all browsers).
+		*/
+		disableInputs: false,
 		classes: {
 			reset:		'',
 			submit:		'submitting',
@@ -33,12 +37,12 @@ var WebServiceForm = new Class({
 			success:	'Thank you!',
 			failure:	'Try again'
 		},
-		/**Second arg to the substitute(inputNamesToValues) call upon the "action" attribute of the form.
+		/**Second arg to all substitution calls (action attribute of the form, submit values…).
 		*Defaults to the default value of substitute (at time of writing, means that you should write the names of the inputs you want to be expanded to their values between {brackets}).
 		*
 		*@see	String.substitute
 		*/
-		actionRegExp:	0 //0 so that it is ignored (shorter than "undefined")
+		substituteRegExp:	0 //0 so that it is ignored (shorter than "undefined")
 	},
 	
 /*
@@ -61,9 +65,9 @@ var WebServiceForm = new Class({
 			noCache: true
 		}).addEvents({
 			success: function(text, xml) {
+				this.show('success', [text, xml]);
 				if (this.options.resetOnSuccess !== false)
 					this.reset.delay(this.options.resetOnSuccess, this);
-				this.show('success', [text, xml]);
 			}.bind(this),
 			failure: function(xhr) {
 				this.enable();
@@ -71,21 +75,34 @@ var WebServiceForm = new Class({
 			}.bind(this)
 		});
 		
-		this.form.addEvent('submit', function(e) {
-			//forbid rage-submit
-			if (this.isDisabled())
-				return false;
-				
-			this.disable();
-			this.makeRequest();
+		this.form.addEvent('submit', this.submitHandler.bind(this));
+	},
+	
+	getForm: function getForm() {
+		return this.form;
+	},
+	
+	getSubmit: function getSubmit() {
+		return this.submit;
+	},
+	
+	/**Called when the form is submitted.
+	*@private
+	*/
+	submitHandler: function submitHandler() {
+		//forbid rage-submit
+		if (this.isDisabled())
+			return false;
 			
-			this.show('submit', this.request);
-			
-			this.request.send({
-				data: this.form
-			});
-			return false; //forbid default redirection
-		}.bind(this));
+		this.disable();
+		this.makeRequest();
+		
+		this.show('submit', this.request);
+		
+		this.request.send({
+			data: this.form
+		});
+		return false; //forbid default redirection
 	},
 
 	/**Creates the request, with action expansion.
@@ -120,9 +137,10 @@ var WebServiceForm = new Class({
 			this.form.set('class', this.options.classes[status]);
 		
 		if (this.options.values[status] !== false)
-			this.submit.set('value', this.options.values[status]);
+			this.submit.set('value', this.options.values[status].substitute(this.form.asObject(), this.options.actionRegExp));
 		
-		this.fireEvent(status, params);
+		Array.from(params).push(this);
+		this.fireEvent(status, params); //1.2 compat: Array.from -> $splat
 		
 		return this;
 	},
@@ -136,15 +154,29 @@ var WebServiceForm = new Class({
 	/**Forbids submission of the form, without updating the UI.
 	*/
 	disable: function disable() {
-		this.submit.store('data-disabled', 'disabled'); //no use of actual disabled because disabled inputs can't be styled, and become unreadable
+		this.setEnabled(false);
 		return this;
 	},
 	
 	/**Enables submission of the form, without updating the UI.
 	*/
 	enable: function enable() {
-		this.submit.store('data-disabled', '');
+		this.setEnabled(true);
 		return this;
+	},
+	
+	/**
+	*@private
+	*/
+	setEnabled: function setEnabled(enable) {
+		this.submit.store('data-disabled', (enable ? '' : 'disabled')); //no use of actual disabled because disabled inputs can't be styled, and become unreadable
+		var disableInputs = this.options.disableInputs;
+		if (disableInputs) {
+			var attribute = (disableInputs === 'readonly' ? 'readonly' : 'disabled');
+			this.form.getElements('input, select, textarea').each(function(input) {
+				input.set(attribute, (enable ? '' : attribute));
+			});
+		}	
 	}
 });
 
@@ -167,7 +199,7 @@ Element.implement({
 	asObject: function asObject() {
 		var result = {};
 		var toIgnore = ['submit', 'reset', 'file'];
-		this.getElements('input, select, textarea', true).each(function(input) {
+		this.getElements('input, select, textarea').each(function(input) {
 			var type = input.get('type');
 			var name = input.get('name');
 			if (! name || toIgnore.contains(type) || input.get('disabled'))
