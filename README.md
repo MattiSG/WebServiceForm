@@ -44,7 +44,7 @@ You can put this piece of code anywhere, it will take care of domready events it
 
 **More precise usage**
 
-	new WebServiceForm(myForm, [options]); //where myForm is an Element or ID
+	new WebServiceForm(myForm[, options]); //where myForm is an Element or ID
 	
 **Action expansion**
 
@@ -72,7 +72,7 @@ Options
 * `resetOnSuccess`: time (in milliseconds) before the form should be reset after a successful update, or false if the form should not be reset. Defaults to 0 (immediate reset).
 * `classes`: a hash containing the CSS classes to be applied to the form element. May contain:
 	- `reset`:	when the form is to be submitted. Defaults to none.
-	- `request`:	when the submission has been asked and a reply is being waited for. Defaults to "submitting".
+	- `submit`:	when the submission has been asked and a reply is being waited for. Defaults to "submitting".
 	- `success`:	when a successful reply has been received from the server. Defaults to "success".
 	- `failure`:	when an failure reply has been received from the server. Defaults to "failure".
 	
@@ -80,7 +80,7 @@ Options
 	
 * `values`: a hash containing the values which the submit input should be updated with. Contains the same keys as the `classes` hash, with the following default values:
 	- `reset`:	defaults to the original value of the submit input.
-	- `request`:	defaults to "Sending…".
+	- `submit`:	defaults to "Sending…".
 	- `success`:	defaults to "Thank you!".
 	- `failure`:	defaults to "Try again".
 	
@@ -94,6 +94,37 @@ The following events may be fired by an instance of this class:
 * `success`: see [`Request.onSuccess`](http://mootools.net/docs/core/Request/Request), just forwarding the `Request` event;
 * `failure`: see [`Request.onFailure`](http://mootools.net/docs/core/Request/Request), just forwarding the `Request` event;
 * `submit`: right before the request is sent. Called with one parameter, the [`Request`](http://mootools.net/docs/core/Request/Request) instance that will be sent, so that you can control it and listen to fancier events (`loadstart`, `progress`…).
+* `reset`: when the form is reset. No parameter passed.
+
+Methods
+-------
+
+**Getters**
+
+* `isDisabled()`: Tells whether the form is currently disabled for submission (i.e. request has been sent and we're waiting for a reply) or not.
+
+**Functions**
+
+* `reset()`: Resets the form and focuses it.
+* `disable()`: Forbids submission of the form, without updating the UI.
+* `enable()`: Enables submission of the form, without updating the UI.
+
+**Static**
+
+* `apply(elements[, options])`: Static global apply shortcut. Params:
+	- `elements`: a `String` or `Element`, or whatever `$$` accepts. The forms to be enhanced with WebServiceForms.
+	- `options`: _optional_, options to pass to the `WebServiceForms` instances.
+
+**Bonus**
+
+* `Element.asObject()`: returns a hash from this `Element`, with its keys being the names of descendant inputs and their corresponding values.
+
+MooTools 1.2 compatibility
+-----------------
+
+This script is intended for MooTools 1.3.
+
+However, only a few instructions are incompatible with MooTools 1.2. Just search for them, they are annotated in the source.
 
 License
 -------

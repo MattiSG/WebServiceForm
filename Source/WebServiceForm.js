@@ -4,7 +4,7 @@
 *@author	Matti Schneider-Ghibaudo
 */
 /*
-*@version	0.2.1
+*@version	0.3
 *
 *@dependencies
 *	MooTools 1.3
@@ -18,18 +18,18 @@ var WebServiceForm = new Class({
 	Implements: [Events, Options],
 	
 	options: {
-		/**Time before the form should go back to normal after a successful update, or false if the form should not be reset.
+		/**Time (in milliseconds) before the form should go back to normal after a successful update, or false if the form should not be reset.
 		*/
 		resetOnSuccess:	0,
 		classes: {
 			reset:		'',
-			request:	'submitting',
+			submit:		'submitting',
 			success:	'success',
 			failure:	'failure'
 		},
 		values: {
 			reset:		false,
-			request:	'Sending…',
+			submit:		'Sending…',
 			success:	'Thank you!',
 			failure:	'Try again'
 		},
@@ -42,9 +42,9 @@ var WebServiceForm = new Class({
 	},
 	
 /*
-	form: Element,
-	submit: Element,
-	request: Reqest,
+	form: Element, //private
+	submit: Element, //private
+	request: Request, //private
 */
 	
 	initialize: function init(form, opts) {
@@ -61,15 +61,13 @@ var WebServiceForm = new Class({
 			noCache: true
 		}).addEvents({
 			success: function(text, xml) {
-				this.show('success');
 				if (this.options.resetOnSuccess !== false)
 					this.reset.delay(this.options.resetOnSuccess, this);
-				this.fireEvent('success', [text, xml]);
+				this.show('success', [text, xml]);
 			}.bind(this),
 			failure: function(xhr) {
-				this.show('failure');
 				this.enable();
-				this.fireEvent('failure', xhr);
+				this.show('failure', xhr);
 			}.bind(this)
 		});
 		
@@ -81,20 +79,26 @@ var WebServiceForm = new Class({
 			this.disable();
 			this.makeRequest();
 			
-			this.fireEvent('submit', this.request);
+			this.show('submit', this.request);
+			
 			this.request.send({
 				data: this.form
 			});
 			return false; //forbid default redirection
 		}.bind(this));
 	},
-	
+
+	/**Creates the request, with action expansion.
+	*@private
+	*/
 	makeRequest: function makeRequest() {
 		this.request.setOptions({
 			url: this.form.get('action').substitute(this.form.asObject(), this.options.actionRegExp)
 		});
 	},
 	
+	/**Resets the form, enables it and focuses it.
+	*/
 	reset: function reset() {
 		this.enable();
 		this.form.reset();
@@ -102,35 +106,51 @@ var WebServiceForm = new Class({
 		return this.show('reset');
 	},
 	
-	/**
+	/**Sets the form to the given status, updating its CSS class and submit value, and firing the corresponding event.
+	*@private
+	*
 	*@param				status	must be one of the keys in options.values and options.classes
-	*@param (optional)	params	the optional params to pass to 
+	*@param (optional)	params	the optional params to pass to the fired event
 	*/
 	show: function show(status, params) {
+		if (this.options.classes[status] === undefined) //checking that the status is a valid one
+			throw 'Unknown status "' + status + '"';
+		
 		if (this.options.classes[status] !== false)
 			this.form.set('class', this.options.classes[status]);
 		
 		if (this.options.values[status] !== false)
 			this.submit.set('value', this.options.values[status]);
-			
+		
+		this.fireEvent(status, params);
+		
 		return this;
 	},
 	
+	/**Tells whether the form is currently disabled for submission (i.e. request has been sent and we're waiting for a reply) or not.
+	*/
 	isDisabled: function isDisabled() {
 		return (this.submit.retrieve('data-disabled') == 'disabled') //no use of actual disabled because disabled inputs can't be styled, and become unreadable
 	},
 	
+	/**Forbids submission of the form, without updating the UI.
+	*/
 	disable: function disable() {
 		this.submit.store('data-disabled', 'disabled'); //no use of actual disabled because disabled inputs can't be styled, and become unreadable
 		return this;
 	},
 	
+	/**Enables submission of the form, without updating the UI.
+	*/
 	enable: function enable() {
 		this.submit.store('data-disabled', '');
 		return this;
 	}
 });
 
+
+/**Static global apply shortcut.
+*/
 WebServiceForm.apply = function WebServiceFormStartup(elements, options) {
 	window.addEvent('domready', function() {
 		$$(elements).each(function(el) {
@@ -139,7 +159,8 @@ WebServiceForm.apply = function WebServiceFormStartup(elements, options) {
 	});
 }
 
-/*
+/**Returns a hash from this Element, with its keys being the names of descendant inputs and their corresponding values.
+*
 *Adapted from Dimitar Christoff at http://stackoverflow.com/questions/2166042/how-to-convert-form-data-to-object-using-mootools
 */
 Element.implement({
