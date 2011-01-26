@@ -17,18 +17,18 @@ The idea is to let you shift that API test form into a usable async one for free
 Features
 --------
 
-You will get:
+**You will get:**
 
 * asynchronous submit (no page reload);
 * submission blocking while first submit is done;
-* destination URI (“action”) expansion with values from the form;
-* CSS & submit values updates about the submission process.
+* destination URI (action attribute from the form) expansion with values from the form;
+* CSS & submit button text updates about the submission process.
 
 As a bonus:
 
 * default CSS for your form that stresses the submission process.
 
-You will not get:
+**You will _not_ get:**
 
 * form validation;
 * server reply handling (an event will pass it to you, of course).
@@ -58,12 +58,13 @@ Example:
 		<input type="submit" value="Send message"/>
 	</form>
 	
-	/* Pressing submit will send a request to "myAction/MyName" with the parameters
-	* {
-	*	userName: "MyName",
-	*	message: "My message"
-	* }
-	*/
+	<!--
+		Pressing submit will send a request to "myAction/MyName" with the parameters
+		{
+			userName: "MyName",
+			message: "My message"
+		}
+	-->
 
 Options
 -------
@@ -81,7 +82,7 @@ Options
 	- `reset`:	defaults to the original value of the submit input.
 	- `request`:	defaults to "Sending…".
 	- `success`:	defaults to "Thank you!".
-	- `failure`:	defaults ot "Try again".
+	- `failure`:	defaults to "Try again".
 	
 	Set any of these to `false` to prevent the value from updating.
 
@@ -90,8 +91,8 @@ Events
 
 The following events may be fired by an instance of this class:
 
-* `success`: see [`Request.onSuccess`](http://mootools.net/docs/core/Request/Request), same args and everything;
-* `failure`: see [`Request.onSuccess`](http://mootools.net/docs/core/Request/Request), same args and everything;
+* `success`: see [`Request.onSuccess`](http://mootools.net/docs/core/Request/Request), just forwarding the `Request` event;
+* `failure`: see [`Request.onFailure`](http://mootools.net/docs/core/Request/Request), just forwarding the `Request` event;
 * `submit`: right before the request is sent. Called with one parameter, the [`Request`](http://mootools.net/docs/core/Request/Request) instance that will be sent, so that you can control it and listen to fancier events (`loadstart`, `progress`…).
 
 License
