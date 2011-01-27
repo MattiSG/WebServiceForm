@@ -1,11 +1,18 @@
 WebServiceForm
 ==============
 
-Basically, a [MooTools](http://mootools.net) automatic asynchronous (“AJAX”) form creator. Transforms a plain form to an asynchronous one.
+**A [MooTools](http://mootools.net) automatic asynchronous (“AJAX”) form creator by [Matti Schneider-Ghibaudo](http://mattischneider.fr).**
+
+Basically, transforms a plain form to an asynchronous one with nice visual clues out of a single call. Meant mostly for **developing a frontend to an API where you care more about result codes than about actual content sent from the server**.
 
 Differs from Form.Request in several important ways, which can be summed up in the fact that this WebServiceForm aims to help you develop frontends to APIs rather than simply getting updates from a server.
 
 For example, while Form.Request aims to make updating an element with the reply to the submission straightforward, this class will let you handle it, and work only with status codes. It will also let you dynamically create the action URL from values in the form, letting you use clean [REST APIs](http://en.wikipedia.org/wiki/Representational_State_Transfer#RESTful_web_services).
+
+- - - - - - - - - - - - - -
+
+Presentation
+============
 
 Developer usage rationale
 -------------------------
@@ -65,6 +72,9 @@ Example:
 			message: "My message"
 		}
 	-->
+	
+Documentation
+=============
 
 Options
 -------
@@ -140,14 +150,32 @@ Methods
 
 * `Element.asObject()`: returns a hash from this `Element`, with its keys being the names of descendant inputs and their corresponding values.
 
-MooTools 1.2 compatibility
------------------
+Compatibility
+=============
+
+MooTools
+--------
+
+This script depends on the JavaScript framework [MooTools](http://mootools.net).
 
 This script is intended for MooTools 1.3.
 
 However, only a few instructions are incompatible with MooTools 1.2. Just search for them, they are annotated in the source.
 
+Browsers
+--------
+
+Tested and working under:
+
+* Safari 5
+* Firefox 3
+* IE 6, 7, 8, 9ß (with (IETester)[http://www.my-debugbar.com/wiki/IETester/HomePage]). IE 6 was very slow (5-6s latency locally) with async requests.
+
+**Not working properly under Opera 10**: if one request succeeds, then all further ones pretend to succeed, even if the status codes show failure. This is most probably a problem in MooTools, but I don't have time to fix it right now.
+
+Please contact me if you test it successfully in other browsers  :)
+
 License
--------
+=======
 
 [CC-BY](http://creativecommons.org/licenses/by/3.0/), i.e. "Do whatever you want as long as I am credited somewhere". Credit must be both given in the code and accessible to the end user. The end-user part may be in an "about" link or whatever, no need to make the reference prominent, but it has to be somehow accessible if someone's wondering.
