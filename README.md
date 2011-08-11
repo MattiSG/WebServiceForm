@@ -84,7 +84,7 @@ Options
 	Can be either `false` (the default), `true` or "readonly", in which case the inputs won't be disabled but set to readonly (not compatible with all browsers).
 * `classes`: a hash containing the CSS classes to be applied to the form element. May contain:
 	- `reset`:	when the form is to be submitted. Defaults to none.
-	- `submit`:	when the submission has been asked and a reply is being waited for. Defaults to "submitting".
+	- `submit`:	when the request has been sent and a reply is being waited for. Defaults to "submitting".
 	- `success`:	when a successful reply has been received from the server. Defaults to "success".
 	- `failure`:	when an failure reply has been received from the server. Defaults to "failure".
 	
@@ -158,9 +158,7 @@ MooTools
 
 This script depends on the JavaScript framework [MooTools](http://mootools.net).
 
-This script is intended for MooTools 1.3.
-
-However, only a few instructions are incompatible with MooTools 1.2. Just search for them, they are annotated in the source.
+This script is intended for MooTools 1.3, but a branch compatible with MooTools 1.2 is available too  :)
 
 Browsers
 --------
@@ -169,7 +167,7 @@ Tested and working under:
 
 * Safari 5
 * Firefox 3
-* IE 6, 7, 8, 9ß (with (IETester)[http://www.my-debugbar.com/wiki/IETester/HomePage]). IE 6 was very slow (5-6s latency locally) with async requests.
+* IE 6, 7, 8, 9ß (with [IETester](http://www.my-debugbar.com/wiki/IETester/HomePage)). IE 6 was very slow (5-6s latency locally) with async requests.
 
 **Not working properly under Opera 10**: if one request succeeds, then all further ones pretend to succeed, even if the status codes show failure. This is most probably a problem in MooTools, but I don't have time to fix it right now.
 
@@ -178,4 +176,5 @@ Please contact me if you test it successfully in other browsers  :)
 License
 =======
 
-[CC-BY](http://creativecommons.org/licenses/by/3.0/), i.e. "Do whatever you want as long as I am credited somewhere". Credit must be both given in the code and accessible to the end user. The end-user part may be in an "about" link or whatever, no need to make the reference prominent, but it has to be somehow accessible if someone's wondering.
+[CC-BY](http://creativecommons.org/licenses/by/3.0/), i.e. "Do whatever you want as long as I am credited somewhere".
+Credit must be both given in the code and accessible to the end user. The end-user part may be in an "about" link or whatever, no need to make the reference prominent, but it has to be somehow accessible if someone's wondering.
