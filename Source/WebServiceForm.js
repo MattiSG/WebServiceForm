@@ -183,7 +183,7 @@ var WebServiceForm = new Class({
 
 /**Static global apply shortcut.
 */
-WebServiceForm.apply = function WebServiceFormStartup(elements, options) {
+WebServiceForm.applyToAll = function WebServiceFormStartup(elements, options) {
 	window.addEvent('domready', function() {
 		$$(elements).each(function(el) {
 			new WebServiceForm(el, options);
