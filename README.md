@@ -45,7 +45,7 @@ How to use
 
 **Dumb usage**
 
-	WebServiceForm.applyTo('form'); //of course, the arg will be passed to $$, so pass it whatever $$ accepts
+	WebServiceForm.applyToAll('form'); //of course, the arg will be passed to $$, so pass it whatever $$ accepts
     
 You can put this piece of code anywhere, it will take care of domready events itself.
 
@@ -142,7 +142,7 @@ Methods
 
 **Static**
 
-* `apply(elements[, options])`: Static global apply shortcut. Params:
+* `applyToAll(elements[, options])`: Static global apply shortcut. Params:
 	- `elements`: a `String` or `Element`, or whatever `$$` accepts. The forms to be enhanced with WebServiceForms.
 	- `options`: _optional_, options to pass to the `WebServiceForms` instances.
 
