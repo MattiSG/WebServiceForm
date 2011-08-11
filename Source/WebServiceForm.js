@@ -7,7 +7,7 @@
 *@version	0.3
 *
 *@dependencies
-*	MooTools 1.3
+*	MooTools 1.2
 *
 *@license
 * (CC-BY)[http://creativecommons.org/licenses/by/3.0/], i.e. "Do whatever you want as long as I am credited somewhere". Credit must be both given in the code and accessible to the end user.
@@ -139,7 +139,7 @@ var WebServiceForm = new Class({
 		if (this.options.values[status] !== false)
 			this.submit.set('value', this.options.values[status].substitute(this.form.asObject(), this.options.actionRegExp));
 		
-		Array.from(params).push(this);
+		$splat(params).push(this);
 		this.fireEvent(status, params); //1.2 compat: Array.from -> $splat
 		
 		return this;
