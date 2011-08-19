@@ -72,7 +72,40 @@ Example:
 			message: "My message"
 		}
 	-->
+
+**Advanced usage: multiple submits**
+
+If you want to manage a form with multiple submits, simply create a WebServiceForm instance per submit input, and pass them the submit button instead of the form, along with their own specific option. Their behaviors will be triggered no matter whether they are the source of the submits or not.
+
+Example:
+	<form id="taskForm" method="post" action="myAction/{taskId}">
+		<input type="text" name="comment" required/>
+		<input type="hidden" name="id" value="XX"/>
+		<input type="submit" id="comment" value="Send comment"/>
+		<input type="submit" id="done" value="…and mark done"/>
+		<input type="submit" id="cancel" value="…or mark cancelled"/>
+	</form>
 	
+	<script type="text/javascript">
+	//<![CDATA[
+		new WebServiceForm('comment'); // this input only will have its value changed
+		
+		// to avoid redundancy ("Sending…" readable on all three inputs), we'll set other values to ' '
+		var emptyValueOnEvents = {
+			submit: ' ', //  not '', otherwise the buttons will lose their height
+			success: ' ',
+			failure: ' '
+		};
+		
+		new WebServiceForm('done', {
+			values: emptyValueOnEvents
+		});
+		new WebServiceForm('cancel', {
+			values: emptyValueOnEvents
+		});
+	//]]>
+	</script>
+
 Documentation
 =============
 

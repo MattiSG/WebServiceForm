@@ -4,7 +4,7 @@
 *@author	Matti Schneider-Ghibaudo
 */
 /*
-*@version	0.3
+*@version	0.4
 *
 *@dependencies
 *	MooTools 1.2
@@ -51,10 +51,20 @@ var WebServiceForm = new Class({
 	request: Request, //private
 */
 	
-	initialize: function init(form, opts) {
+	/**
+	*@param	el	Element	either a form (simple init, API-compatible) or a submit button (for advanced forms with several submit inputs)
+	*/
+	initialize: function init(el, opts) {
 		this.setOptions(opts);
-		this.form = $(form);
-		this.submit = this.form.getChildren('input[type=submit]:last-child')[0]; //consider that the submit element to block is the last one in the form
+		
+		el = $(el);
+		if (el.get('tag') == 'form') {
+			this.form = el;
+			this.submit = el.getElement('input[type=submit]');
+		} else {
+			this.submit = el;
+			this.form = el.getParents('form')[0];
+		}
 		
 		if (! this.options.values.reset)
 			this.options.values.reset = this.submit.get('value');
@@ -185,7 +195,7 @@ var WebServiceForm = new Class({
 */
 WebServiceForm.applyToAll = function WebServiceFormStartup(elements, options) {
 	window.addEvent('domready', function() {
-		$$(elements).each(function(el) {
+		$$(elements || 'form').each(function(el) {
 			new WebServiceForm(el, options);
 		});
 	});
