@@ -42,9 +42,15 @@ var WebServiceForm = new Class({
 		*
 		*@see	String.substitute
 		*/
-		substituteRegExp:	0 //0 so that it is ignored (shorter than "undefined")
+		substituteRegExp:	0, //0 so that it is ignored (shorter than "undefined")
+		
+		/*The storage key in which the attached state should be stored.
+		*In case of multiple submits, we need to avoid firing a request for each submit, so we have to store whether a WSF instance was already attached or not in the Element Storage.
+		*@see	Element.store
+		*/
+		storageKey: 'WSF-attached'
 	},
-	
+		
 /*
 	form: Element, //private
 	submit: Element, //private
@@ -69,6 +75,19 @@ var WebServiceForm = new Class({
 		if (! this.options.values.reset)
 			this.options.values.reset = this.submit.get('value');
 		
+		if (! this.form.retrieve(this.options.storageKey))
+			this.attach();
+	},
+	
+	getForm: function getForm() {
+		return this.form;
+	},
+	
+	getSubmit: function getSubmit() {
+		return this.submit;
+	},
+	
+	attach: function attach() {
 		this.request = new Request({
 			url: this.form.get('action'),
 			method: this.form.get('method') || 'post',
@@ -86,14 +105,8 @@ var WebServiceForm = new Class({
 		});
 		
 		this.form.addEvent('submit', this.submitHandler.bind(this));
-	},
-	
-	getForm: function getForm() {
-		return this.form;
-	},
-	
-	getSubmit: function getSubmit() {
-		return this.submit;
+		
+		this.form.store(this.options.storageKey, this);
 	},
 	
 	/**Called when the form is submitted.
