@@ -90,7 +90,7 @@ var WebServiceForm = new Class({
 	attach: function attach() {
 		this.request = new Request({
 			url: this.form.get('action'),
-			method: this.form.get('method') || 'post',
+			method: this.form.get('method') || 'post',
 			noCache: true
 		}).addEvents({
 			success: function(text, xml) {
